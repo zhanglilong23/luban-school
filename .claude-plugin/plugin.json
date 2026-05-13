@@ -1,0 +1,26 @@
+{
+  "name": "luban-school",
+  "version": "1.1.0",
+  "description": "鲁班学派 — 契约驱动的 AI Agent 角色分工协作体系。五角色（司南/鲁班/狄公/墨子/云笈）+ 五原型（周天/入木/存真/绳墨/定盘）。斜杠命令 /luban:司南 /luban:鲁班 /luban:狄公 /luban:墨子 /luban:云笈 激活角色，无需手动配置 CLAUDE.md。",
+  "author": {
+    "name": "鲁班学派",
+    "url": "https://github.com/zhanglilong23/luban-school"
+  },
+  "repository": "https://github.com/zhanglilong23/luban-school",
+  "license": "MIT",
+  "keywords": [
+    "luban-school",
+    "agent-team",
+    "role-collaboration",
+    "contract-driven",
+    "code-review",
+    "quality-gate",
+    "devops",
+    "behavioral-archetypes",
+    "craftsmanship",
+    "multi-agent",
+    "separation-of-duties",
+    "slash-commands",
+    "skill"
+  ]
+}

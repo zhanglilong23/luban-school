@@ -1,0 +1,18 @@
+{
+  "name": "luban-school",
+  "owner": {
+    "name": "鲁班学派",
+    "url": "https://github.com/zhanglilong23/luban-school"
+  },
+  "metadata": {
+    "description": "契约驱动的 AI Agent 角色分工协作体系",
+    "version": "1.1.0"
+  },
+  "plugins": [
+    {
+      "name": "luban-school",
+      "version": "1.1.0",
+      "source": "./"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "description": "鲁班学派 hooks — 自动化工作流提示",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[鲁班学派] 斜杠命令: /luban:司南 /luban:鲁班 /luban:狄公 /luban:墨子 /luban:云笈 | @提及: @司南 @鲁班 @狄公 @墨子 @云笈'"
+          }
+        ]
+      }
+    ]
+  }
+}
