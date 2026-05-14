@@ -8,7 +8,7 @@
 
 **三重能力：**
 
-1. **角色分工协作** — 五角色边界清晰，契约驱动交付
+1. **角色分工协作** — 五角色 + 学派法器边界清晰，契约驱动交付
 2. **七签功法体系** — 七个正交方法论，按场景切换，内置每个角色
 3. **质量门禁** — 独立验证、三张清单、一票否决
 
@@ -94,6 +94,53 @@
  心法     功法     诀法     式法     令法     术法     大法
 ```
 
+---
+
+## ⚙️ 敕令·周天仪
+
+> **仙人降敕，司南定契，周天仪转，万械循章。**
+
+### 由来
+
+鲁班学派无尊卑，七签匠人皆平级。若需自动化串联诸匠，不可设「管理者」凌驾其上。故唯有一途：**仙人降敕授权，学派共铸一器**——敕令·周天仪。
+
+此仪**非人非官，唯器唯公**。它不决策、不代劳、不评价，只将司南所定契约化为精确的流转序列。
+
+> 法器无意志，故无私；无位格，故不凌人。
+
+### 位格
+
+法器不入修仙五阶，独立为**法器位**。
+
+```
+仙人（用户）── 降敕启动法器
+司南         ── 领命拆定契约
+周天仪       ── 奉敕运转，依契奉请
+三匠         ── 各司其职，造·审·渡
+```
+
+### 功能
+
+仙人降敕后，法器读取司南契约，按序**奉请**三匠：
+
+1. **奉请鲁班**（造）→ 仪测 `[榫卯]` 标记
+2. **奉请狄公**（审）→ 仪测《质量放行单》
+3. **奉请墨子**（渡）→ 契约落档
+
+若某步受阻，自动重试（每匠至多三次）。三次未通，仪停待示，不自行决断。全程留痕，输出 `[AUTO-REPORT]` 结构化实录。
+
+### 用法
+
+```bash
+# 降敕启动（需传入司南所定契约）
+/luban:chiling TASK-xxx
+
+# 或 @提及
+@敕令 TASK-xxx
+```
+
+---
+
 ## 核心标识
 
 | 标识 | 含义 |
@@ -111,7 +158,7 @@
 | 层级 | 安装内容 | 适用场景 |
 |------|---------|---------|
 | **最小** | 1 个角色（如只装鲁班） | 个人开发者，只需编码助手 |
-| **标准** | 5 角色（问道+司南+鲁班+狄公+墨子） | 团队协作，完整流水线 |
+| **标准** | 5 角色 + 1 法器（问道+司南+鲁班+狄公+墨子 + 敕令·周天仪） | 团队协作，完整流水线 |
 
 每个角色自包含完整七签定义，独立安装即可使用全部功法。
 
@@ -124,7 +171,7 @@ claude plugin marketplace add luban-school/luban-school
 claude plugin install luban-school@luban-school
 ```
 
-安装后直接使用斜杠命令：`/luban:wendao` `/luban:sinan` `/luban:luban` `/luban:digong` `/luban:mozi`。中英映射详见下方"使用方法"。无需手动配置 CLAUDE.md。
+安装后直接使用斜杠命令：`/luban:wendao` `/luban:sinan` `/luban:luban` `/luban:digong` `/luban:mozi` `/luban:chiling`。中英映射详见下方"使用方法"。无需手动配置 CLAUDE.md。
 
 **手动项目级安装：**
 
@@ -149,6 +196,7 @@ cp -r path/to/luban-school/commands/* .claude/commands/
 | @鲁班 | luban | Engineer |
 | @狄公 | digong | QA |
 | @墨子 | mozi | DevOps |
+| @敕令 | chiling | 敕令·周天仪 |
 ```
 
 ### Vercel Skills CLI
@@ -207,6 +255,7 @@ Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity 均支持标准
 /luban:luban 开始执行
 /luban:digong 审查
 /luban:mozi deploy
+/luban:chiling TASK-xxx
 
 # @mention（手动安装需配置 CLAUDE.md 触发规则）
 @问道 我觉得功能不够智能
@@ -214,6 +263,7 @@ Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity 均支持标准
 @鲁班 开始执行
 @狄公 审查
 @墨子 deploy
+@敕令 TASK-xxx
 @鲁班 +入木          # 鲁班修习入木签
 @狄公 +存真          # 狄公修习存真签
 ```
@@ -231,6 +281,7 @@ Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity 均支持标准
 | `luban` | 鲁班 — 执行工程师 | 存真签 | 结丹期 |
 | `digong` | 狄公 — 质量守门人 | 绳墨签 | 化神期 |
 | `mozi` | 墨子 — 部署运维 | 定盘签 | 渡劫期 |
+| `chiling` | 敕令·周天仪 — 学派法器 | 周天签 | 法器位 |
 
 每个技能文件自包含：行为基线 + 七签速查 + 全部签文 + 修习语法 + 专属规程。
 
