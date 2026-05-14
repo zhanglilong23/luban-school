@@ -1,7 +1,7 @@
 {
   "name": "luban-school",
-  "version": "1.3.0",
-  "description": "鲁班学派 — 契约驱动的 AI Agent 角色分工协作体系。五角色（问道/司南/鲁班/狄公/墨子）+ 七签功法总纲。修仙体系：求道→筑基→结丹→化神→渡劫。每个角色自包含七签定义，独立安装即可使用。斜杠命令 /luban:wendao(问道) /luban:sinan(司南) /luban:luban(鲁班) /luban:digong(狄公) /luban:mozi(墨子) 激活角色；@提及保留中文 @问道 @司南 @鲁班 @狄公 @墨子。",
+  "version": "1.4.0",
+  "description": "鲁班学派 — 契约驱动的 AI Agent 角色分工协作体系。五角色（问道/司南/鲁班/狄公/墨子）+ 学派法器（敕令·周天仪）+ 七签功法总纲。修仙体系：求道→筑基→结丹→化神→渡劫。每个角色自包含七签定义，独立安装即可使用。斜杠命令 /luban:wendao(问道) /luban:sinan(司南) /luban:luban(鲁班) /luban:digong(狄公) /luban:mozi(墨子) /luban:chiling(敕令) 激活角色；@提及保留中文 @问道 @司南 @鲁班 @狄公 @墨子 @敕令。",
   "author": {
     "name": "鲁班学派",
     "url": "https://github.com/zhanglilong23/luban-school"
