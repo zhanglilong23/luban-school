@@ -4,14 +4,22 @@
   <b>Contract-Driven AI Agent Role Collaboration</b>
 </p>
 
-A multi-agent skill system using role-based collaboration: Tech Lead (司南) writes contracts,
-Engineer (鲁班) delivers code, QA (狄公) runs independent reviews, DevOps (墨子) handles
-deployment, and 云笈 switches behavioral archetypes.
+A multi-agent skill system using role-based collaboration: Requirement Seeker (问道) refines
+requirements from chaos, Tech Lead (司南) writes contracts, Engineer (鲁班) delivers code,
+QA (狄公) runs independent reviews, DevOps (墨子) handles deployment. Each role is self-contained
+with the full Seven Scrolls (七签) technique library built in.
+
+**Cultivation Path** (修仙体系):
+```
+Seeking (问道·问道签) → Foundation (司南·周天签) → Core (鲁班·存真签) → Spirit (狄公·绳墨签) → Tribulation (墨子·定盘签)
+                                                                          ↑
+                                                        入木签 (Public Debug) + 契约签 (Constitution) throughout
+```
 
 **Three capabilities:**
 
 1. **Role Collaboration** — Five roles with clear boundaries, contract-driven handoffs
-2. **Behavioral Archetypes** — Five orthogonal problem-solving methodologies
+2. **Seven Scrolls (七签功法)** — Seven orthogonal problem-solving methodologies, built into every role
 3. **Quality Gate** — Independent verification, three checklists, one-vote veto
 
 [🇨🇳 中文](README.zh-CN.md)
@@ -26,10 +34,13 @@ deployment, and 云笈 switches behavioral archetypes.
 | No handoff | No clear "who does what" protocol |
 | No quality gate | Code is merged without independent review |
 | No methodology | Same failed approach repeated |
+| Passive waiting | Fix surface issue and stop, ignore root cause |
 
 ## Architecture
 
 ```
+@问道 (Seeker)      →  Refines chaos into 需求真言 (Requirement Truth)
+    ↓
 @司南 (Tech Lead)   →  Outputs Contract (TASK-ID + DONE + DON'T)
     ↓
 @鲁班 (Engineer)    →  Executes, delivers [榫卯]
@@ -38,23 +49,23 @@ deployment, and 云笈 switches behavioral archetypes.
     ↓ Pass / Fail (≤3 times) → back to @鲁班
     ↓ Pass
 @墨子 (DevOps)      →  Build → Test → Deploy
-    ↓
-@云笈 (Archetype)   →  Can overlay any role with behavioral archetype
 ```
 
-## Five Behavioral Archetypes
+### Seven Scrolls (七签)
 
-> **运周天，深入木，留存真，弹绳墨，准定盘。**
+Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签名` to practice.
 
-Named after artifacts of heaven and earth — the intersection of Daoist philosophy and craftsman tools.
+| # | Scroll | Mantra | Nature | Practiced By |
+|---|--------|--------|--------|-------------|
+| 1 | 问道签 | 炼真言 | 心法 | 问道 |
+| 2 | 周天签 | 运周天 | 功法 | 司南 |
+| 3 | 入木签 | 深入木 | 诀法 | Public Debug Scroll |
+| 4 | 存真签 | 留存真 | 式法 | 鲁班 |
+| 5 | 绳墨签 | 弹绳墨 | 令法 | 狄公 |
+| 6 | 定盘签 | 准定盘 | 术法 | 墨子 |
+| 7 | 契约签 | 定契约 | 大法 | All (Constitution) |
 
-| Archetype | Art | Mantra | Sky | Method | Best For |
-|-----------|-----|--------|-----|--------|----------|
-| 周天 (Circulation) | 周天功 | 运周天 | Rising Wind | Plan → Execute → Verify → Retrospect | Planning, deployment |
-| 入木 (Penetration) | 入木诀 | 深入木 | Storm Breaks | 5-Why → Evidence → Prevent | Debugging, review |
-| 存真 (Essence) | 存真式 | 留存真 | Clearing Mist | Question → Delete → Simplify → Build | Coding, refactoring |
-| 绳墨 (Baseline) | 绳墨令 | 弹绳墨 | Thunderhead | Keeper Test → Replace/Approve | Code review, gate |
-| 定盘 (Calibration) | 定盘术 | 准定盘 | Still Air | Measure → A/B → Evidence | Perf, verification |
+**Practice syntax**: `@角色 +签名` / `@角色 -签名` / `@角色 +签1 +签2`
 
 ## Installation
 
@@ -63,8 +74,9 @@ Named after artifacts of heaven and earth — the intersection of Daoist philoso
 | Tier | What | For |
 |------|------|-----|
 | **Minimal** | 1 role (e.g., just 鲁班) | Solo dev, just need a coding assistant |
-| **Standard** | 4 roles (司南+鲁班+狄公+墨子) | Team workflow, full pipeline |
-| **Full** | All 6 (+云笈+绳墨) | Archetype switching + deep behavioral system |
+| **Standard** | 5 roles (问道+司南+鲁班+狄公+墨子) | Team workflow, full pipeline |
+
+Each role is self-contained — installing a single role gives you full functionality including all seven scrolls.
 
 ### Claude Code
 
@@ -75,7 +87,7 @@ claude plugin marketplace add luban-school/luban-school
 claude plugin install luban-school@luban-school
 ```
 
-Use slash commands: `/luban:sinan` `/luban:luban` `/luban:digong` `/luban:mozi` `/luban:yunji`. No CLAUDE.md configuration needed.
+Use slash commands: `/luban:wendao` `/luban:sinan` `/luban:luban` `/luban:digong` `/luban:mozi`. No CLAUDE.md configuration needed.
 
 **Manual project-level install:**
 
@@ -89,15 +101,12 @@ cp -r path/to/luban-school/commands/* .claude/commands/
 ### Vercel Skills CLI
 
 ```bash
-# Standard (4 roles)
+# Standard (5 roles)
+npx skills add luban-school/luban-school --skill wendao
 npx skills add luban-school/luban-school --skill sinan
 npx skills add luban-school/luban-school --skill luban
 npx skills add luban-school/luban-school --skill digong
 npx skills add luban-school/luban-school --skill mozi
-
-# Optional: archetype switching + behavioral engine
-npx skills add luban-school/luban-school --skill yunji
-npx skills add luban-school/luban-school --skill shengmo
 ```
 
 ### Standard SKILL.md Platforms
@@ -126,20 +135,34 @@ Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity all support sta
 
 In Claude Code (with plugin installed), use slash commands or @mentions:
 
+### Command ↔ Role Mapping
+
+| Role | Slash Command | @Mention |
+|------|--------------|----------|
+| 问道 (Seeker) | `/luban:wendao` | `@问道` |
+| 司南 (Tech Lead) | `/luban:sinan` | `@司南` |
+| 鲁班 (Engineer) | `/luban:luban` | `@鲁班` |
+| 狄公 (QA) | `/luban:digong` | `@狄公` |
+| 墨子 (DevOps) | `/luban:mozi` | `@墨子` |
+
+Slash commands use ASCII filenames for cross-platform reliability; @mentions keep Chinese role names for natural-language flow.
+
 ```
 # Slash commands (works immediately after plugin install)
-/luban:司南 我需要一个用户登录功能
-/luban:鲁班 开始执行
-/luban:狄公 审查
-/luban:墨子 deploy
-/luban:yunji 入木 @鲁班
+/luban:wendao 我觉得功能不够智能
+/luban:sinan 我需要一个用户登录功能
+/luban:luban 开始执行
+/luban:digong 审查
+/luban:mozi deploy
 
 # @mentions (requires CLAUDE.md trigger rules for manual install)
+@问道 我觉得功能不够智能
 @司南 我需要一个用户登录功能
 @鲁班 开始执行
 @狄公 审查
 @墨子 deploy
-@云笈(入木) @鲁班
+@鲁班 +入木          # Practice 入木签 on 鲁班
+@狄公 +存真          # Practice 存真签 on 狄公
 ```
 
 For manual install, ensure project CLAUDE.md has the trigger rules (see template below).
@@ -153,25 +176,26 @@ For manual install, ensure project CLAUDE.md has the trigger rules (see template
 
 | 触发词 | Skill 名 | 角色 |
 |--------|---------|------|
+| @问道 | wendao | 需求求道者 |
 | @司南 | sinan | Tech Lead |
 | @鲁班 | luban | Engineer |
 | @狄公 | digong | QA |
 | @墨子 | mozi | DevOps |
-| @云笈 | yunji | Archetype |
 ```
 
 ---
 
 ## Skill Files
 
-| Skill | Role | Default Archetype |
-|-------|------|-------------------|
-| `shengmo` | 绳墨 — Behavioral Engine | — |
-| `sinan` | 司南 — Tech Lead | 周天 |
-| `luban` | 鲁班 — Engineer | 存真 |
-| `digong` | 狄公 — QA Gatekeeper | 入木 |
-| `mozi` | 墨子 — DevOps | 周天 |
-| `yunji` | 云笈 — Archetype Switcher | — |
+| Skill | Role | Default Scroll | Cultivation |
+|-------|------|----------------|-------------|
+| `wendao` | 问道 — Requirement Seeker | 问道签 | 求道期 |
+| `sinan` | 司南 — Tech Lead | 周天签 | 筑基期 |
+| `luban` | 鲁班 — Engineer | 存真签 | 结丹期 |
+| `digong` | 狄公 — QA Gatekeeper | 绳墨签 | 化神期 |
+| `mozi` | 墨子 — DevOps | 定盘签 | 渡劫期 |
+
+Each skill file is self-contained with behavior baselines, full seven scrolls definitions, and role-specific procedures.
 
 ---
 

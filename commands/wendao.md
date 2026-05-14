@@ -1,15 +1,13 @@
 ---
-description: "部署运维 — 构建/测试/部署流水线，Agent 资源生命周期管理。"
-argument-hint: "[deploy|agent]"
+description: "需求求道者 — 与用户共修需求，从混沌中炼出需求真言。触发：/luban:wendao。三阶炼需求，不写代码。"
+argument-hint: "[需求描述]"
 ---
 
-# /luban:mozi — DevOps
+# /luban:wendao — 需求求道者
 
-加载 Skill("mozi") 激活墨子角色。
+加载 Skill("wendao") 激活问道角色。
 
-两种模式：
-- `deploy` — 狄公放行后触发：构建 → 测试 → 部署 → 健康检查
-- `agent` — 任务结束后触发：停止 Agent、清理 worktree、释放端口
+问道与用户共修需求，从混沌中炼出需求真言。须经历筑基→结丹→化神三阶，输出需求真言后转交 @司南。
 
 ## 全部命令速查
 
