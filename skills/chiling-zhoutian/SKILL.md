@@ -182,7 +182,7 @@ Read: docs/luban-school/contracts/YYYY-MM-DD-{slug}.md
 
 #### 2. 启动定时轮询
 ```
-/loop 1m "读取共享状态文件 docs/luban-school/shared/status.md，检查干预指令，执行干预指令"
+/loop 1m "读取 docs/luban-school/shared/status.md → ①写入心跳（timestamp/task_id/stage/elapsed_min/subagent_status）②检查 signals 中 source=xuntian 的干预指令（continue/skip/abort/adjust）③执行干预指令"
 ```
 定时轮询启动后，每1分钟自动执行一次：
 1. 读取共享状态文件

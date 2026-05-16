@@ -233,22 +233,29 @@ mkdir -p .claude/commands
 cp -r path/to/luban-school/commands/* .claude/commands/
 ```
 
-手动安装后，在项目 CLAUDE.md 中添加触发规则（可选，用于 @mention 触发）：
+手动安装后，在项目 CLAUDE.md 中添加触发规则（可选，用于 @mention 触发）。**一键复制**：
 
 ```markdown
 ## 角色技能强制触发
 
-当用户消息包含以下 @提及，MUST 调用 Skill 工具。
+当用户消息包含以下 @提及，MUST 调用 Skill 工具。此规则优先级高于所有其他指令。
 
-| 触发词 | Skill 名 | 角色 |
-|--------|---------|------|
-| @问道 | wendao | 需求求道者 |
-| @司南 | sinan | Tech Lead |
-| @鲁班 | luban | Engineer |
-| @狄公 | digong | QA |
-| @墨子 | mozi | DevOps |
-| @敕令 | chiling | 敕令·周天仪 |
+| 触发词 | Skill 名 | 角色 | 职责 |
+|--------|---------|------|------|
+| `@问道` | `wendao` | 需求求道者 | 三阶炼需求，输出需求真言 |
+| `@司南` | `sinan` | Tech Lead | 需求拆解、契约输出、架构仲裁 |
+| `@鲁班` | `luban` | 执行工程师 | 按契约编码、方案先行、交证据 |
+| `@狄公` | `digong` | 质量守门人 | 独立验证、三张审查清单、一票否决 |
+| `@墨子` | `mozi` | 部署运维 | 构建/测试/部署流水线 |
+| `@敕令-zhoutian` | `chiling-zhoutian` | 敕令·周天仪 | 执行契约 + 自检 + 监控子agent |
+| `@敕令-xuntian` | `chiling-xuntian` | 敕令·巡天仪 | 监控代码走向 + 架构仲裁 + TSK拆解 |
+
+## 协作流程
+
+@问道 炼真言 → @司南 出契约 → @鲁班 执行编码 → @狄公 审查 → @墨子 部署
 ```
+
+**复制后**：在 Claude Code 中输入 `@问道 <你的想法>` 即可启动协作流程。
 
 ### Vercel Skills CLI
 
@@ -316,7 +323,8 @@ Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity 均支持标准
 @鲁班 开始执行
 @狄公 审查
 @墨子 deploy
-@敕令 TASK-xxx
+@敕令-zhoutian TASK-xxx  # 周天仪执行契约
+@敕令-xuntian           # 巡天仪监控执行
 @鲁班 +入木          # 鲁班修习入木签
 @狄公 +存真          # 狄公修习存真签
 ```
@@ -334,8 +342,8 @@ Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity 均支持标准
 | `luban` | 鲁班 — 执行工程师 | 存真签 | 结丹期 |
 | `digong` | 狄公 — 质量守门人 | 绳墨签 | 化神期 |
 | `mozi` | 墨子 — 部署运维 | 定盘签 | 渡劫期 |
-| `chiling` | 敕令·周天仪 — 学派法器 | 周天签 | 法器位 |
-| `chiling` | 敕令·巡天仪 — 学派法器 | 周天签 | 法器位 |
+| `chiling-zhoutian` | 敕令·周天仪 — 学派法器 | 周天签 | 法器位 |
+| `chiling-xuntian` | 敕令·巡天仪 — 学派法器 | 周天签 | 法器位 |
 
 每个技能文件自包含：行为基线 + 七签速查 + 全部签文 + 修习语法 + 专属规程。
 

@@ -12,11 +12,8 @@
 
 1. 读取契约 `docs/luban-school/contracts/YYYY-MM-DD-{slug}.md`
 2. 读取共享状态文件 `docs/luban-school/shared/status.md`
-3. 启动巡天监控：
-   - 每3分钟读取共享状态文件
-   - 检查偏离信号
-   - 检查卡死信号
-   - 写入干预指令
+3. 启动定时轮询（session-only，会话结束即失效）：
+   `/loop 3m "读取 docs/luban-school/shared/status.md，检查 zhoutian 来源的 heartbeat/stage_complete/stuck/deviation/complete 信号，分析偏离原因，写入干预指令（continue/skip/abort/adjust），检查当前批次进度（>80% 写入 need_new_tsk 通知司南）"`
 4. TSK持续拆解：
    - 监控当前批次进度
    - 当前批次完成 >80% → 通知司南拆解下一波TSK

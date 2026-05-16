@@ -192,7 +192,7 @@ Read: docs/luban-school/shared/status.md
 
 #### 3. 启动定时轮询
 ```
-/loop 3m "读取共享状态文件，检查偏离信号，检查卡死信号，写入干预指令"
+/loop 3m "读取 docs/luban-school/shared/status.md → ①检查 signals 中 source=zhoutian 的 heartbeat（缺失>3min→卡死）/stuck/deviation/complete 信号 ②分析偏离原因（acceptable记录/architectural写干预/requirement写干预）③写入干预指令（continue/skip/abort/adjust）④进度>80%→写入 need_new_tsk 通知司南"
 ```
 
 #### 4. 监控执行状态

@@ -12,11 +12,13 @@
 
 1. 读取契约 `docs/luban-school/contracts/YYYY-MM-DD-{slug}.md`
 2. 初始化共享状态文件 `docs/luban-school/shared/status.md`
-3. 启动周天自转：
+3. 启动定时轮询（session-only，会话结束即失效）：
+   `/loop 1m "读取 docs/luban-school/shared/status.md，写入心跳（timestamp/task_id/stage/elapsed_min/subagent_status），检查 xuntian 来源的干预指令（continue/skip/abort/adjust），执行干预指令"`
+4. 启动周天自转：
    - 奉请鲁班（造）→ 仪测 [榫卯]
    - 奉请狄公（审）→ 仪测 《质量放行单》
    - 奉请墨子（渡）→ 部署确认
-4. 自检机制：
+5. 自检机制：
    - 每1分钟更新心跳
    - 超时检测（>10分钟判定卡死）
    - 卡死处理（重试+上下文切换，4次后终止）
