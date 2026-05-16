@@ -153,6 +153,37 @@ license: MIT
 
 用户确认契约后，将契约写入 `docs/luban-school/contracts/YYYY-MM-DD-<slug>.md`。确保会话压缩后契约仍可被狄公、鲁班读取。
 
+### 自动化触发模式（巡天仪 spawn）
+
+当由巡天仪通过 `Agent(spawn)` 触发时（非人类 `/luban-school:sinan` 调用），接收结构化输入：
+
+**输入格式**：
+```
+TASK-ID: TSK-xxx
+Scope: {任务范围描述}
+约束: {DON'T 约束，来自 task-queue.md 或架构文档}
+优先级: {low / medium / high}
+上下文: {相关文件路径、架构决策引用}
+```
+
+**行为协议**：
+- 读取项目 CLUDE.md 和 task-queue.md 了解架构上下文
+- 按契约模板输出完整契约到 `docs/luban-school/contracts/YYYY-MM-DD-tsk-{id}-{slug}.md`
+- 更新 `docs/luban-school/shared/task-queue.md`：将对应 TASK 从 `needs-contract` 改为 `ready`，填入契约文件路径
+- **自动化模式下不启动交互式问答**（无人类可交互）
+- **TASK-ID + DONE + DON'T 缺一不可**
+
+**输出格式**（写入 task-queue.md 结果列）：
+```
+✅ 契约已落纸: {contract-file-path}
+```
+
+**限制**：
+- 不修改已有契约文件（只新建）
+- 不跳过契约模板中的任一必须字段
+- 不在自动化模式下做架构仲裁（若 scope 不足以决策 → 标记为 manual，由巡天 escalation 给仙人）
+- 保持人类触发模式不变（`/luban-school:sinan` 和 `@司南` 仍可用）
+
 ### 架构仲裁
 
 方案冲突时：说出仲裁决定 + 理由 + 更新 DON'T。
