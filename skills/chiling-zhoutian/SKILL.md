@@ -108,7 +108,7 @@ license: MIT
 
 **能做**:
 - 三阶段 inline 角色切换：Skill("luban") → Skill("digong") → Skill("mozi")
-- 每阶段完成后更新 status.md
+- 每阶段完成后更新 status.md（每次写 status.md 都刷新 `last_update` 为当前时间，包括 build 修复期间更新 evidence。不做无内容变更的纯 heartbeat 写入。`stage` 字段仅在阶段转换时变更，`last_update` 随每次写入刷新。）
 - 启动时读取 intervention.md（响应 target=zhoutian 的指令）
 - 构建验证（dotnet build）、测试运行（dotnet test）
 - 禁区文件验证（git diff --name-only）
@@ -174,9 +174,9 @@ Skill("luban") → 以鲁班行为基线执行编码任务
 ```
 
 **构建失败处理**：
-- 第 1 次：带上错误信息，修复
-- 第 2 次：换一种修复方式
-- 第 3 次：简化实现（只保证核心功能）
+- 第 1 次：带上错误信息，修复。更新 status.md evidence + last_update（如 "build 修复第 1 次"）
+- 第 2 次：换一种修复方式。更新 status.md evidence + last_update（如 "build 修复第 2 次"）
+- 第 3 次：简化实现（只保证核心功能）。更新 status.md evidence + last_update
 - 第 4 次：更新 status.md stage=failed，仪停
 
 #### 阶段 2/3：狄公模式（审查）

@@ -188,6 +188,7 @@ cron 触发 → 读三文件
   │   ├─ task-queue 有 needs-contract + manual → 写 INT escalation
   │   │
   │   ├─ task-queue 有 paused 条目 → 跳过，不 spawn，不 escalation
+  │   │   └─ 若队列非空但全部 paused 或无可 spawn 项（ready 全部 deps-blocked）→ 不 escalation，每 12 轮 cron 输出一行摘要
   │   │
   │   └─ 队列无任何推进项 → 写 INT "计划完成/队列空"
   │
@@ -266,6 +267,7 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 - 退出条件：status.md task_id 变更 或 task-queue.md 有仙人写入的变更
 - 期间行为：不写新 INT，每 6 轮 cron 输出一行状态摘要
 - **防永久化**：silent 持续 >24h → 自动退出 silent → 写 INT escalation(high) "队列长期停滞，需仙人确认"
+- **silent 启动时间推导**：silent_start = 触发 silent 的 escalation INT 的 timestamp + 30min（escalation chain 总时长）。此 INT 已持久化在 intervention.md 归档区。Session 重启后从归档区重新计算 silent 持续时间，不依赖内存状态。
 
 **不可跳过中间级别**（如从 promotion 直接跳到 escalation）。
 
@@ -288,11 +290,13 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 | 构建失败循环 | stage=coding + retries_used>=3 | 写 INT abort |
 | 设计偏差 | 狄公打回原因=设计偏差 | 写 INT abort "需架构决策" |
 | 有 paused 任务 | task-queue 有 paused 条目 | 跳过，不 spawn，不 escalation |
+| 全部 paused 或无可 spawn | 队列非空但无 ready+deps✅+非paused | 每 12 轮一行摘要，不 escalation |
+| failed-contract 滞留 | task-queue 有 failed-contract 条目 | 跳过，每 cron 周期写 INT reminder 通知仙人 |
 | 无响应(reminder) | complete后9min队列无变化 | 写 INT reminder(medium) |
 | 无响应(escalation) | reminder后9min仍无变化 | 写 INT escalation(high, 二选一) |
 | 无响应(silent) | escalation后12min仍无变化 | 进入 silent 模式 |
 | Session 重启 | durable cron 恢复 | 读 status 追上进度。若 stage=running + last_update 早于本次启动时间 → 判定子 agent 僵尸死亡 → 写 status=failed(zombie) → 重置 task 为 ready → 下轮 cron 重 spawn（带上次失败上下文） |
-| 子 agent 僵尸恢复 | 重启后检测到 zombie | 更新 task-queue 对应条目 running→ready，下轮 cron 重 spawn。首次重试，携带上次失败上下文 |
+| 子 agent 僵尸恢复 | 重启后检测到 zombie | 更新 task-queue running→ready + retries+1。retries<3 → 重 spawn（带上次失败上下文）。retries≥3 → failed(zombie-loop) → escalation |
 
 ---
 
@@ -341,10 +345,11 @@ durable cron 在新 session 首次触发时：
 2. 若 stage=complete/failed → 正常推进队列
 3. 若 stage=running + last_update 早于本次 session 启动时间 → **子 agent 已随旧 session 死亡（zombie）**
    - 写 status.md: `stage=failed(zombie)`, 证据="巡天 session 重启，子 agent 未存活"
-   - 更新 task-queue.md: 对应 TASK running→ready（重试计数 +1）
-   - 下轮 cron 重 spawn（携带上次失败上下文）
+   - 更新 task-queue.md: 对应 TASK running→ready，**retries+1**
+   - 若 retries ≥ 3 → 不重 spawn → 改为 `failed(zombie-loop)` → 写 INT escalation "任务反复僵尸，需人工诊断"
+   - 若 retries < 3 → 下轮 cron 重 spawn（携带上次失败上下文）
 4. 若 stage=running + last_update 在合理范围 → 继续监控
-5. 若上次在 silent 模式 → 恢复 silent 状态
+5. 若上次在 silent 模式 → 从干预归档区找到最近一条 severity=high 的 escalation INT，按 timestamp+30min 计算 silent 持续时间。若 >24h → 退出 silent → 写 INT escalation；否则恢复 silent 状态
 
 **定期重启建议**：每 24h 或每完成 10 个 TASK，在 cron 摘要中提示 "建议重启巡天 session 以避免上下文压缩"。
 
