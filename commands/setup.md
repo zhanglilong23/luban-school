@@ -2,7 +2,7 @@
 description: "交互式配置鲁班学派。探索项目环境后逐题确认，生成 CLAUDE.md/AGENTS.md 触发规则。首次使用前运行。"
 ---
 
-# /luban:setup — 交互式配置
+# /luban-school:setup — 交互式配置
 
 探索当前项目环境，逐题确认配置，生成触发规则。一次只问一个问题。
 
@@ -23,7 +23,7 @@ description: "交互式配置鲁班学派。探索项目环境后逐题确认，
 
 **Q2 — 触发方式**：偏好哪种调用方式？
 
-- **斜杠命令**（推荐，装完即用）：`/luban:luban` `/luban:sinan`
+- **斜杠命令**（推荐，装完即用）：`/luban-school:luban` `/luban-school:sinan`
 - **@mention**（自然语言）：`@鲁班` `@司南`
 - **两者都要**
 
@@ -57,8 +57,8 @@ description: "交互式配置鲁班学派。探索项目环境后逐题确认，
 
 📄 已写入: CLAUDE.md
 👥 角色: [列出已选角色]
-⌨️  调用: /luban:luban /luban:sinan ...
+⌨️  调用: /luban-school:luban /luban-school:sinan ...
 📖 术语: CONTEXT.md
 
-➡️ 试试: /luban:luban 你好
+➡️ 试试: /luban-school:luban 你好
 ```

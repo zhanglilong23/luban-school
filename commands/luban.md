@@ -1,9 +1,9 @@
 ---
-description: "执行工程师 — 按契约编码、方案先行、异常熔断、交证据。触发：/luban:luban + 任务卡片。"
+description: "执行工程师 — 按契约编码、方案先行、异常熔断、交证据。触发：/luban-school:luban + 任务卡片。"
 argument-hint: "[任务描述]"
 ---
 
-# /luban:luban — Engineer
+# /luban-school:luban — Engineer
 
 加载 Skill("luban") 激活鲁班角色。
 
@@ -13,8 +13,8 @@ argument-hint: "[任务描述]"
 
 | 命令 | Skill | 角色 |
 |------|-------|------|
-| `/luban:wendao` | wendao | 问道 — 需求求道与真言炼成 |
-| `/luban:sinan` | sinan | 司南 — 需求拆解与架构仲裁 |
-| `/luban:luban` | luban | 鲁班 — 编码执行与闭环交付 |
-| `/luban:digong` | digong | 狄公 — 质量审查与一票否决 |
-| `/luban:mozi` | mozi | 墨子 — 部署运维与环境管理 |
+| `/luban-school:wendao` | wendao | 问道 — 需求求道与真言炼成 |
+| `/luban-school:sinan` | sinan | 司南 — 需求拆解与架构仲裁 |
+| `/luban-school:luban` | luban | 鲁班 — 编码执行与闭环交付 |
+| `/luban-school:digong` | digong | 狄公 — 质量审查与一票否决 |
+| `/luban-school:mozi` | mozi | 墨子 — 部署运维与环境管理 |

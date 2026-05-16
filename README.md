@@ -69,15 +69,15 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 
 ---
 
-## ⚙️ 敕令·周天仪 (Chiling — The Instrument)
+## ⚙️ 敕令法器家族 (Chiling — The Instruments)
 
-> **仙人降敕，司南定契，周天仪转，万械循章。**
+> **仙人降敕，司南定契，周天仪转，巡天仪察，万械循章。**
 
 ### 由来
 
-鲁班学派无尊卑，七签匠人皆平级。若需自动化串联诸匠，不可设「管理者」凌驾其上。故唯有一途：**仙人降敕授权，学派共铸一器**——敕令·周天仪。
+鲁班学派无尊卑，七签匠人皆平级。若需自动化串联诸匠，不可设「管理者」凌驾其上。故唯有一途：**仙人降敕授权，学派共铸双器**——敕令·周天仪与敕令·巡天仪。
 
-此仪**非人非官，唯器唯公**。它不决策、不代劳、不评价，只将司南所定契约化为精确的流转序列。
+此二仪**非人非官，唯器唯公**。周天仪不决策、不代劳、不评价，只将司南所定契约化为精确的流转序列；巡天仪只监控、不干预，确保执行不偏离设计。
 
 > 法器无意志，故无私；无位格，故不凌人。
 
@@ -86,13 +86,31 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 法器不入修仙五阶，独立为**法器位**。
 
 ```
-仙人（用户）── 降敕启动法器
-司南         ── 领命拆定契约
-周天仪       ── 奉敕运转，依契奉请
-三匠         ── 各司其职，造·审·渡
+仙人（用户）
+  │
+  │  /luban-school:chiling-zhoutian TASK-xxx  或  /luban-school:chiling-xuntian
+  ↓
+【法器】敕令·周天仪 ──读取──→ 司南所定契约
+  │
+  ├── 奉请 → 鲁班（造）── 仪测 [榫卯]
+  ├── 奉请 → 狄公（审）── 仪测 《质量放行单》
+  └── 奉请 → 墨子（渡）
+
+【法器】敕令·巡天仪 ──读取──→ 共享状态文件
+  │
+  ├── 监控代码走向（对比契约）
+  ├── 解决架构问题（仲裁偏离）
+  └── 通知司南拆解TSK
 ```
 
-### 功能
+### 法器家族
+
+| 法器 | 命令 | 职责 | 域 |
+|------|------|------|---|
+| **周天仪** | `/luban-school:chiling-zhoutian` | 执行契约 + 自检 + 监控子agent | 执行域 |
+| **巡天仪** | `/luban-school:chiling-xuntian` | 监控代码走向 + 解决架构问题 + 通知司南拆解TSK | 设计域 |
+
+### 周天仪功能
 
 仙人降敕后，法器读取司南契约，按序**奉请**三匠：
 
@@ -102,15 +120,48 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 
 若某步受阻，自动重试（每匠至多三次）。三次未通，仪停待示，不自行决断。全程留痕，输出 `[AUTO-REPORT]` 结构化实录。
 
+**自检机制**：
+- 每1分钟更新心跳
+- 超时检测（>10分钟判定卡死）
+- 卡死处理（重试+上下文切换，4次后终止）
+
+### 巡天仪功能
+
+巡天仪是设计域法器，负责监控代码走向、解决架构问题、通知司南拆解TSK：
+
+1. **代码走向监控**：每3分钟读取共享状态文件，检查偏离信号
+2. **架构问题仲裁**：检测到架构偏离时，分析原因，写入干预指令
+3. **TSK持续拆解**：监控当前批次进度，完成>80%时通知司南拆解下一波TSK
+
+**偏离处理**：
+- `acceptable`：版本升级(minor/patch)、工具链等价替换 → 记录，继续执行
+- `architectural`：设计方案变更（如REST→gRPC）→ 写干预指令，等司南仲裁
+- `requirement`：实现了契约外功能、遗漏了契约内功能 → 写干预指令，等司南仲裁
+
 ### 用法
 
 ```bash
-# 降敕启动（需传入司南所定契约）
-/luban:chiling TASK-xxx
+# 周天仪：执行契约
+/luban-school:chiling-zhoutian TASK-xxx
+
+# 巡天仪：监控执行
+/luban-school:chiling-xuntian
 
 # 或 @提及
-@敕令 TASK-xxx
+@敕令-zhoutian TASK-xxx
+@敕令-xuntian TASK-xxx
 ```
+
+### 共享状态文件
+
+周天仪和巡天仪通过共享状态文件异步协作：
+
+**位置**: `docs/luban-school/shared/status.md`
+
+**信号类型**：
+- 周天仪→巡天仪：heartbeat, stage_complete, stuck, deviation, complete
+- 巡天仪→周天仪：continue, skip, abort, adjust
+- 巡天仪→司南：need_new_tsk
 
 ---
 
@@ -134,7 +185,7 @@ claude plugin marketplace add luban-school/luban-school
 claude plugin install luban-school@luban-school
 ```
 
-Use slash commands: `/luban:wendao` `/luban:sinan` `/luban:luban` `/luban:digong` `/luban:mozi` `/luban:chiling`. No CLAUDE.md configuration needed.
+Use slash commands: `/luban-school:wendao` `/luban-school:sinan` `/luban-school:luban` `/luban-school:digong` `/luban-school:mozi` `/luban-school:chiling-zhoutian` `/luban-school:chiling-xuntian`. No CLAUDE.md configuration needed.
 
 **Manual project-level install:**
 
@@ -186,23 +237,24 @@ In Claude Code (with plugin installed), use slash commands or @mentions:
 
 | Role | Slash Command | @Mention |
 |------|--------------|----------|
-| 问道 (Seeker) | `/luban:wendao` | `@问道` |
-| 司南 (Tech Lead) | `/luban:sinan` | `@司南` |
-| 鲁班 (Engineer) | `/luban:luban` | `@鲁班` |
-| 狄公 (QA) | `/luban:digong` | `@狄公` |
-| 墨子 (DevOps) | `/luban:mozi` | `@墨子` |
-| 敕令 (Instrument) | `/luban:chiling` | `@敕令` |
+| 问道 (Seeker) | `/luban-school:wendao` | `@问道` |
+| 司南 (Tech Lead) | `/luban-school:sinan` | `@司南` |
+| 鲁班 (Engineer) | `/luban-school:luban` | `@鲁班` |
+| 狄公 (QA) | `/luban-school:digong` | `@狄公` |
+| 墨子 (DevOps) | `/luban-school:mozi` | `@墨子` |
+| 敕令·周天仪 (Instrument) | `/luban-school:chiling-zhoutian` | `@敕令-zhoutian` |
+| 敕令·巡天仪 (Monitor) | `/luban-school:chiling-xuntian` | `@敕令-xuntian` |
 
 Slash commands use ASCII filenames for cross-platform reliability; @mentions keep Chinese role names for natural-language flow.
 
 ```
 # Slash commands (works immediately after plugin install)
-/luban:wendao 我觉得功能不够智能
-/luban:sinan 我需要一个用户登录功能
-/luban:luban 开始执行
-/luban:digong 审查
-/luban:mozi deploy
-/luban:chiling TASK-xxx
+/luban-school:wendao 我觉得功能不够智能
+/luban-school:sinan 我需要一个用户登录功能
+/luban-school:luban 开始执行
+/luban-school:digong 审查
+/luban-school:mozi deploy
+/luban-school:chiling-zhoutian TASK-xxx
 
 # @mentions (requires CLAUDE.md trigger rules for manual install)
 @问道 我觉得功能不够智能
@@ -246,6 +298,7 @@ For manual install, ensure project CLAUDE.md has the trigger rules (see template
 | `digong` | 狄公 — QA Gatekeeper | 绳墨签 | 化神期 |
 | `mozi` | 墨子 — DevOps | 定盘签 | 渡劫期 |
 | `chiling` | 敕令·周天仪 — Instrument | 周天签 | 法器位 |
+| `chiling` | 敕令·巡天仪 — Monitor | 周天签 | 法器位 |
 
 Each skill file is self-contained with behavior baselines, full seven scrolls definitions, and role-specific procedures.
 
