@@ -31,3 +31,18 @@
 ## retries 列语义
 
 `retries` 仅计数 **task 级别的重 spawn**（zombie 恢复 + 司南 spawn 失败重试），不计数周天仪内部的构建/测试重试（那在 status.md `retries_used` 字段中）。
+
+---
+
+## 巡天独立验证清单
+
+> 每次 task 标 `completed` 前，巡天必须独立验证以下四件（不依赖周天仪自报）：
+
+| # | 验证项 | 命令 | 通过标准 |
+|---|--------|------|---------|
+| 1 | commit hash 存在 | `git log --oneline -5` | 对应 hash 在最近 commit 中 |
+| 2 | 变更范围在白名单 | `git diff <prev>..<curr> --name-only` | 所有文件在契约白名单内 |
+| 3 | 红线区零越界 | grep 红线区关键词 | 0 匹配 |
+| 4 | commit msg 含验收数据 | `git log -1 --format=%B` | 含测试数 / 偏离清单 / 红线区证据 |
+
+未通过任一条 → 不标 completed，记录偏离，必要时回写 status.md。

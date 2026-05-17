@@ -369,6 +369,54 @@ durable cron 在新 session 首次触发时：
 
 ---
 
+### 巡天独立验证清单
+
+周天仪报告 `completed` 后，巡天**不可直接信任**，必须独立验证以下四件。任一未通过 → 不标 completed，记录偏离，必要时回写 status.md。
+
+| # | 验证项 | 命令 | 通过标准 |
+|---|--------|------|---------|
+| 1 | commit hash 存在 | `git log --oneline -5` | 对应 hash 在最近 commit 中 |
+| 2 | 变更范围在白名单 | `git diff <prev>..<curr> --name-only` | 所有文件在契约白名单内 |
+| 3 | 红线区零越界 | grep 红线区关键词（McpService / AIAgent/Core 等） | 0 匹配 |
+| 4 | commit msg 含验收数据 | `git log -1 --format=%B` | 含测试数 / 偏离清单 / 红线区证据 |
+
+**验证失败处置**：
+- 1/2/3 未通过 → 写 INT abort，标 completed 为 invalid
+- 4 未通过（commit msg 缺验收数据）→ 写 INT reminder 要求补 commit msg（amend）
+
+---
+
+### Escalation Option 模板
+
+巡天仪向仙人 escalation 时，**禁止开放式提问**，必须给出 2-3 个结构化 Option：
+
+```markdown
+请仙人定盘：
+
+**Option A · {方案名}**（推荐 · 如{适用条件}）
+- 具体动作 1
+- 具体动作 2
+- 估时：Xd
+
+**Option B · {方案名}**（推荐 · 如{适用条件}）
+- 具体动作 1
+- 具体动作 2
+- 估时：Xd
+
+**Option C · {方案名}**
+- 具体动作 1
+- 估时：Xd
+```
+
+**规则**：
+- 每个 Option 必须含**具体动作**（不可只说"继续"或"暂停"）
+- 每个 Option 必须含**估时**
+- 标注**推荐项**及**适用条件**（"推荐 · 如本地后端不可用"）
+- 最多 3 个 Option（超过则巡天自行筛选，保留差异最大的方案）
+- 若有前置依赖（如"需仙人提供 XX"），在 Option 内明示
+
+---
+
 ## 常见借口
 
 | 借口 | 裁决 |
