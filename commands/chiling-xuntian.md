@@ -1,51 +1,7 @@
-# /luban-school:chiling-xuntian — 敕令·巡天仪
+---
+description: "Deprecated - use the luban-school:chiling-xuntian skill instead"
+---
 
-设计域法器，监控代码走向、解决架构问题、通知司南拆解TSK。
+此命令已废弃，将在下一主版本中移除。
 
-## 触发
-
-```
-/luban-school:chiling-xuntian
-```
-
-## 行为
-
-1. 读取契约 `docs/luban-school/contracts/YYYY-MM-DD-{slug}.md`
-2. 读取共享状态文件 `docs/luban-school/shared/status.md`
-3. 启动定时轮询（session-only，会话结束即失效）：
-   `/loop 3m "读取 docs/luban-school/shared/status.md，检查 zhoutian 来源的 heartbeat/stage_complete/stuck/deviation/complete 信号，分析偏离原因，写入干预指令（continue/skip/abort/adjust），检查当前批次进度（>80% 写入 need_new_tsk 通知司南）"`
-4. TSK持续拆解：
-   - 监控当前批次进度
-   - 当前批次完成 >80% → 通知司南拆解下一波TSK
-
-## 输出
-
-```
-[AUTO-REPORT] TASK-{编号}
-┌──────────┬────────┬────────┬────────────────┐
-│ 阶段     │ 状态   │ 偏离   │ 干预           │
-├──────────┼────────┼────────┼────────────────┤
-│ 编码     │ ✅/❌  │ N      │ N              │
-│ 审查     │ ✅/❌  │ N      │ N              │
-│ 部署     │ ✅/❌  │ N      │ N              │
-└──────────┴────────┴────────┴────────────────┘
-状态: {巡检中 / 巡检完成 / 需要仲裁}
-偏离统计: {acceptable: N, architectural: N, requirement: N}
-干预统计: {continue: N, skip: N, abort: N, adjust: N}
-建议下一步: {无 / 请 @司南 仲裁 / 请检查环境}
-```
-
-## 与周天仪的协作
-
-巡天仪通过共享状态文件与周天仪异步协作：
-- 周天仪写入：心跳、阶段完成、卡死信号、偏离信号
-- 巡天仪读取：分析状态，写入干预指令
-- 周天仪读取：执行干预指令
-
-## 偏离处理
-
-| 偏离类型 | 判定条件 | 处理方式 |
-|---------|---------|---------|
-| `acceptable` | 版本升级(minor/patch)、工具链等价替换、实现细节调整但满足DONE | 记录，继续执行 |
-| `architectural` | 设计方案变更（如REST→gRPC）、核心逻辑变更 | 写干预指令，等司南仲裁 |
-| `requirement` | 实现了契约外功能、遗漏了契约内功能 | 写干预指令，等司南仲裁 |
+请使用 `/luban-school:chiling-xuntian` 或 `@敕令-xuntian` 调用 skill。完整行为定义见 `skills/chiling-xuntian/SKILL.md`。

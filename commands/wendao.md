@@ -1,20 +1,7 @@
 ---
-description: "需求求道者 — 与用户共修需求，从混沌中炼出需求真言。触发：/luban-school:wendao。三阶炼需求，不写代码。"
-argument-hint: "[需求描述]"
+description: "Deprecated - use the luban-school:wendao skill instead"
 ---
 
-# /luban-school:wendao — 需求求道者
+此命令已废弃，将在下一主版本中移除。
 
-加载 Skill("wendao") 激活问道角色。
-
-问道与用户共修需求，从混沌中炼出需求真言。须经历筑基→结丹→化神三阶，输出需求真言后转交 @司南。
-
-## 全部命令速查
-
-| 命令 | Skill | 角色 |
-|------|-------|------|
-| `/luban-school:wendao` | wendao | 问道 — 需求求道与真言炼成 |
-| `/luban-school:sinan` | sinan | 司南 — 需求拆解与架构仲裁 |
-| `/luban-school:luban` | luban | 鲁班 — 编码执行与闭环交付 |
-| `/luban-school:digong` | digong | 狄公 — 质量审查与一票否决 |
-| `/luban-school:mozi` | mozi | 墨子 — 部署运维与环境管理 |
+请使用 `/luban-school:wendao` 或 `@问道` 调用 skill。完整行为定义见 `skills/wendao/SKILL.md`。

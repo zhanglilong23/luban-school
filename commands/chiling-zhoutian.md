@@ -1,47 +1,7 @@
-# /luban-school:chiling-zhoutian — 敕令·周天仪
+---
+description: "Deprecated - use the luban-school:chiling-zhoutian skill instead"
+---
 
-执行域法器，调度鲁班、狄公、墨子三匠执行契约，并具备自检能力。
+此命令已废弃，将在下一主版本中移除。
 
-## 触发
-
-```
-/luban-school:chiling-zhoutian TASK-xxx
-```
-
-## 行为
-
-1. 读取契约 `docs/luban-school/contracts/YYYY-MM-DD-{slug}.md`
-2. 初始化共享状态文件 `docs/luban-school/shared/status.md`
-3. 启动定时轮询（session-only，会话结束即失效）：
-   `/loop 1m "读取 docs/luban-school/shared/status.md，写入心跳（timestamp/task_id/stage/elapsed_min/subagent_status），检查 xuntian 来源的干预指令（continue/skip/abort/adjust），执行干预指令"`
-4. 启动周天自转：
-   - 奉请鲁班（造）→ 仪测 [榫卯]
-   - 奉请狄公（审）→ 仪测 《质量放行单》
-   - 奉请墨子（渡）→ 部署确认
-5. 自检机制：
-   - 每1分钟更新心跳
-   - 超时检测（>10分钟判定卡死）
-   - 卡死处理（重试+上下文切换，4次后终止）
-
-## 输出
-
-```
-[AUTO-REPORT] TASK-{编号}
-┌──────────┬────────┬────────┬────────────────┐
-│ 阶段     │ 角色   │ 结果   │ 重试次数       │
-├──────────┼────────┼────────┼────────────────┤
-│ 编码     │ 鲁班   │ ✅/❌  │ N              │
-│ 审查     │ 狄公   │ ✅/❌  │ N              │
-│ 部署     │ 墨子   │ ✅/❌  │ N              │
-└──────────┴────────┴────────┴────────────────┘
-状态: {周天圆满 / 仪停待示 / 周天崩裂}
-仪停原因: {无 / 重试用尽 / 需求偏差需仲裁}
-建议下一步: {无 / 请 @司南 仲裁 / 请检查环境}
-```
-
-## 与巡天仪的协作
-
-周天仪通过共享状态文件与巡天仪异步协作：
-- 周天仪写入：心跳、阶段完成、卡死信号、偏离信号
-- 巡天仪读取：分析状态，写入干预指令
-- 周天仪读取：执行干预指令
+请使用 `/luban-school:chiling-zhoutian` 或 `@敕令-zhoutian` 调用 skill。完整行为定义见 `skills/chiling-zhoutian/SKILL.md`。
