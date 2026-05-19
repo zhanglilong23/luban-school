@@ -229,8 +229,6 @@ claude plugin install luban-school@luban-school
 ```bash
 mkdir -p .claude/skills
 cp -r path/to/luban-school/skills/* .claude/skills/
-mkdir -p .claude/commands
-cp -r path/to/luban-school/commands/* .claude/commands/
 ```
 
 手动安装后，在项目 CLAUDE.md 中添加触发规则（可选，用于 @mention 触发）。**一键复制**：

@@ -151,13 +151,13 @@ Read: docs/luban-school/shared/intervention.md
 
 三个文件任一不存在 → 创建空文件，task-queue.md 输出提示"队列空，请仙人补充任务"。
 
-#### 2. 启动 durable cron
+#### 2. 启动 session cron
 
 ```
-CronCreate(durable: true, */3 * * * *, prompt: "巡天 cron 回调: ①读 status.md 判 task 状态 ②若 complete/failed→更新 task-queue ③读 task-queue 找下一动作 ④判定+执行(spawn周天/spawn司南/escalation) ⑤若 running+异常→深度旁证→escalation ⑥更新 intervention.md 归档区 ⑦输出一行摘要")
+CronCreate(durable: false, */3 * * * *, prompt: "巡天 cron 回调: ①读 status.md 判 task 状态 ②若 complete/failed→更新 task-queue ③读 task-queue 找下一动作 ④判定+执行(spawn周天/spawn司南/escalation) ⑤若 running+异常→深度旁证→escalation ⑥更新 intervention.md 归档区 ⑦输出一行摘要")
 ```
 
-**重要**：durable cron 仅在至少一个 Claude Code 会话活跃时触发。关闭所有窗口后 cron 暂停，重新 `/luban-school:chiling-xuntian` 后自动恢复。
+**重要**：session-only cron，CLI 关闭则 cron 自动消失。需重新 `/luban-school:chiling-xuntian` 启动巡天。
 
 #### 3. 首轮巡检
 
@@ -295,7 +295,7 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 | 无响应(reminder) | complete后9min队列无变化 | 写 INT reminder(medium) |
 | 无响应(escalation) | reminder后9min仍无变化 | 写 INT escalation(high, 二选一) |
 | 无响应(silent) | escalation后12min仍无变化 | 进入 silent 模式 |
-| Session 重启 | durable cron 恢复 | 读 status 追上进度。若 stage=running + last_update 早于本次启动时间 → 判定子 agent 僵尸死亡 → 写 status=failed(zombie) → 重置 task 为 ready → 下轮 cron 重 spawn（带上次失败上下文） |
+| Session 重启 | 用户重新降敕 `/luban-school:chiling-xuntian` | 读 status 追上进度。若 stage=running + last_update 早于本次启动时间 → 判定子 agent 僵尸死亡 → 写 status=failed(zombie) → 重置 task 为 ready → 下轮 cron 重 spawn（带上次失败上下文） |
 | 子 agent 僵尸恢复 | 重启后检测到 zombie | 更新 task-queue running→ready + retries+1。retries<3 → 重 spawn（带上次失败上下文）。retries≥3 → failed(zombie-loop) → escalation |
 
 ---
@@ -340,10 +340,11 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 
 ### Session 重启恢复
 
-durable cron 在新 session 首次触发时：
+巡天 cron 为 session-only，CLI 关闭后 cron 消失。用户重新 `/luban-school:chiling-xuntian` 降敕时，巡天初始化流程检测旧 session 残留状态：
+
 1. 读 status.md → 判断当前状态
 2. 若 stage=complete/failed → 正常推进队列
-3. 若 stage=running + last_update 早于本次 session 启动时间 → **子 agent 已随旧 session 死亡（zombie）**
+3. 若 stage=running + last_update 早于当前时间 15min 以上 → **子 agent 已随旧 session 死亡（zombie）**
    - 写 status.md: `stage=failed(zombie)`, 证据="巡天 session 重启，子 agent 未存活"
    - 更新 task-queue.md: 对应 TASK running→ready，**retries+1**
    - 若 retries ≥ 3 → 不重 spawn → 改为 `failed(zombie-loop)` → 写 INT escalation "任务反复僵尸，需人工诊断"

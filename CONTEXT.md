@@ -79,4 +79,3 @@ _Avoid_: 放弃、停止、escalation（用"熔断"）
 - `CLAUDE.md` — 触发规则与七签功法体系
 - `README.zh-CN.md` — 完整文档
 - `.claude/skills/` — 角色技能定义（每个 SKILL.md 自包含）
-- `commands/` — 斜杠命令

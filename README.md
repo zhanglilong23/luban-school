@@ -192,8 +192,6 @@ Use slash commands: `/luban-school:wendao` `/luban-school:sinan` `/luban-school:
 ```bash
 mkdir -p .claude/skills
 cp -r path/to/luban-school/skills/* .claude/skills/
-mkdir -p .claude/commands
-cp -r path/to/luban-school/commands/* .claude/commands/
 ```
 
 ### Vercel Skills CLI

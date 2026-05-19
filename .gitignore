@@ -4,6 +4,9 @@
 # Claude Code 本地设置
 .claude/settings.local.json
 
+# 发布者 playbook（不入版本控制）
+docs/luban-school/playbooks/
+
 # 系统文件
 Thumbs.db
 .DS_Store
