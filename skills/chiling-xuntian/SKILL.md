@@ -1,6 +1,6 @@
 ---
 name: chiling-xuntian
-description: "敕令·巡天仪 — 设计域法器。仙人降敕，法器自运转。监控代码走向、自动推进任务链、spawn 周天仪/司南。触发：/luban-school:chiling-xuntian  或 @敕令-xuntian"
+description: "敕令·巡天仪 — 设计域法器。仙人降敕，法器自运转。监控代码走向、自动推进任务链、spawn 周天仪/司南/玄鉴。触发：/luban-school:chiling-xuntian  或 @敕令-xuntian"
 license: MIT
 ---
 
@@ -112,6 +112,7 @@ license: MIT
 - 写入 intervention.md（干预指令 + 归档区维护）
 - Spawn 周天仪子 agent（执行域）
 - Spawn 司南子 agent（设计域，仅 needs-contract + auto）
+- Spawn 玄鉴子 agent（诊断域，异动检测触发）
 - 深度旁证（git status、文件时间戳、grep 计数）
 - 偏离类型判定（acceptable/architectural/requirement）
 - escalation chain 自动升级
@@ -130,10 +131,11 @@ license: MIT
 仙人（用户）── 降敕启动法器
 巡天仪       ── 奉敕运转，调度中枢
   ├── spawn 周天仪 ── inline 鲁班→狄公→墨子
-  └── spawn 司南   ── 拆解 needs-contract 任务
+  ├── spawn 司南   ── 拆解 needs-contract 任务
+  └── spawn 玄鉴   ── 异动诊断（照骨/观势），显影归流
 ```
 
-**一句话：仙人降敕，巡天调度。周天执行，司南拆解。问道留给人。**
+**一句话：仙人降敕，巡天调度。周天执行，司南拆解，玄鉴诊断。问道留给人。**
 
 ---
 
@@ -154,7 +156,7 @@ Read: docs/luban-school/shared/intervention.md
 #### 2. 启动 session cron
 
 ```
-CronCreate(durable: false, */3 * * * *, prompt: "巡天 cron 回调: ①读 status.md 判 task 状态 ②若 complete/failed→更新 task-queue ③读 task-queue 找下一动作 ④判定+执行(spawn周天/spawn司南/escalation) ⑤若 running+异常→深度旁证→escalation ⑥更新 intervention.md 归档区 ⑦输出一行摘要")
+CronCreate(durable: false, */3 * * * *, prompt: "巡天 cron 回调: ①读 status.md 判 task 状态 ②若 complete/failed→更新 task-queue ③读 task-queue 找下一动作 ④判定+执行(spawn周天/spawn司南/escalation) ⑤若 running+异常→深度旁证→escalation ⑥异动检测→请玄鉴(如需) ⑦读 xuanjian-report.md 显影归流 ⑧更新 intervention.md 归档区 ⑨输出一行摘要")
 ```
 
 **重要**：session-only cron，CLI 关闭则 cron 自动消失。需重新 `/luban-school:chiling-xuntian` 启动巡天。
@@ -200,6 +202,21 @@ cron 触发 → 读三文件
   │   └─ retries_used >= 3 → 写 INT abort
   │
   └─ stage=failed → escalation "任务失败需人工介入"
+
+  ── 异动检测（每轮 cron 执行，在上述分支判定后追加）
+  │
+  ├─ 核心模块文件变更 > 3 个（git diff --stat 上轮→本轮）→ spawn 玄鉴(bg, +观势)
+  ├─ 同一文件 3 天内被修改 > 5 次（git log --since=3d -- <file> | wc -l）→ spawn 玄鉴(bg, +照骨)
+  ├─ 周天仪鲁班模式 retries_used >= 2（status.md 记录）→ spawn 玄鉴(bg, +照骨)
+  └─ 无异动 → 跳过
+
+  ── 显影归流（异动检测后执行）
+  │
+  ├─ Read: docs/luban-school/shared/xuanjian-report.md
+  ├─ 文件不存在或为空 → 跳过
+  ├─ 凶险=P0 → 写 INT escalation 给司南，附显影摘要
+  ├─ 凶险=P1 → 写 INT reminder，标记"待下一迭代处理"
+  └─ 凶险=P2 → 写入本轮摘要，不 escalation
 ```
 
 ---
@@ -247,7 +264,28 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 
 司南 spawn 失败 → 重试 ≤3 次。超过 → 在 task-queue.md 标记该条目为 `failed-contract` → 写 INT escalation 通知仙人。
 
-**串行保证**：status.md stage=running 时绝不 spawn 新的子 agent。
+**Spawn 玄鉴**（诊断域，异动检测触发）：
+
+```
+Agent(subagent_type="general-purpose", run_in_background=true):
+  prompt: |
+    你是太素玄鉴（敕令·诊断域法器）。执行诊断任务。
+
+    诊断类型: {照骨/观势/全相}
+    触发原因: {巡天仪异动检测结果 / 周天仪请鉴 / 仙人直接召唤}
+    相关文件: {涉及的文件路径列表}
+
+    行为协议:
+    - 调用 Skill("chiling-xuanjian") 了解完整法器法则
+    - 按对应法相流转执行诊断（照骨:摄→寻→探 / 观势:观→审→寻 / 全相:全流程）
+    - 输出结构化显影到 docs/luban-school/shared/xuanjian-report.md（覆盖写）
+    - 显影必须包含：五衰定性 + 病位 + 凶险定级(P0/P1/P2) + 破局法诀
+    - 不改代码、不定契约、不代狄公断案
+```
+
+玄鉴 spawn 超时 5min 无显影写入 → 放弃本轮请鉴，继续正常巡检。
+
+**串行保证**：status.md stage=running 时绝不 spawn 新的子 agent（玄鉴除外——玄鉴为只读诊断，不修改代码，不与周天仪冲突）。
 
 ---
 
@@ -297,6 +335,11 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 | 无响应(silent) | escalation后12min仍无变化 | 进入 silent 模式 |
 | Session 重启 | 用户重新降敕 `/luban-school:chiling-xuntian` | 读 status 追上进度。若 stage=running + last_update 早于本次启动时间 → 判定子 agent 僵尸死亡 → 写 status=failed(zombie) → 重置 task 为 ready → 下轮 cron 重 spawn（带上次失败上下文） |
 | 子 agent 僵尸恢复 | 重启后检测到 zombie | 更新 task-queue running→ready + retries+1。retries<3 → 重 spawn（带上次失败上下文）。retries≥3 → failed(zombie-loop) → escalation |
+| 核心模块异动 | git diff --stat 显示核心模块 > 3 文件变更 | spawn 玄鉴(bg, +观势) → 等显影 → 按凶险程度决策 |
+| 文件频繁修改 | 同一文件 3 天内 git log > 5 次 | spawn 玄鉴(bg, +照骨) → 防伏尸相 |
+| 鲁班受困 | status.md retries_used >= 2 | spawn 玄鉴(bg, +照骨) → 显影作为第 3 次重试上下文 |
+| 玄鉴显影 P0 | xuanjian-report.md 凶险=P0 | 写 INT escalation 给司南，附显影摘要 |
+| 玄鉴显影 P1 | xuanjian-report.md 凶险=P1 | 写 INT reminder，标记"待下一迭代处理" |
 
 ---
 
@@ -362,7 +405,7 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 
 | 防线 | 机制 |
 |------|------|
-| 文件即外部记忆 | 每次 cron 回调重新读取 status/task-queue/intervention 三文件 |
+| 文件即外部记忆 | 每次 cron 回调重新读取 status/task-queue/intervention/xuanjian-report 四文件 |
 | 模板化 spawn prompt | 周天仪/司南 spawn prompt 使用固定模板（见 Spawn 规则节） |
 | 子 agent 独立上下文 | Agent spawn 创建全新上下文，不继承巡天压缩污染 |
 | 最小化 cron 输出 | 正常时仅一行摘要，状态变更时才输出 AUTO-REPORT 表格 |
@@ -430,4 +473,4 @@ Agent(subagent_type="general-purpose", run_in_background=true):
 
 ## 行为边界
 
-✅ 读共享状态 / spawn 子 agent(bg) / 写干预指令 / 更新 task-queue / 深度旁证 / 偏离判定 / escalation chain | ❌ 修改代码 / 替三匠决策 / 删除角色文件 / 跳过 escalation 级别 / spawn 问道 / 并行 spawn
+✅ 读共享状态 / spawn 子 agent(bg) / 写干预指令 / 更新 task-queue / 深度旁证 / 偏离判定 / escalation chain / 异动检测→请玄鉴 / 显影归流 | ❌ 修改代码 / 替三匠决策 / 删除角色文件 / 跳过 escalation 级别 / spawn 问道 / 并行 spawn（玄鉴除外）

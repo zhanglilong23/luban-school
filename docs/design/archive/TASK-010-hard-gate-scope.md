@@ -1,7 +1,7 @@
 # TASK-010 · HARD-GATE 设计范围定性 — 技术方案
 
 **契约来源**: 司南 2026-05-14 残留物治理 Sprint
-**类型**: need-design（等老板拍板，影响 CLAUDE.md + 可能影响 wendao/mozi SKILL.md）
+**类型**: need-design → **已决议 HG-2，已落地**
 **鲁班推荐**: **方向 HG-1**（仅门禁段使用 HARD-GATE，CLAUDE.md 加一句明示）
 **影响范围**: `CLAUDE.md`（加定义段）+ 视情况 `skills/wendao/SKILL.md` `skills/mozi/SKILL.md`
 
@@ -109,9 +109,12 @@ skills/mozi/SKILL.md    ❌         无 HARD-GATE 标签
 
 ---
 
-## 四、待老板拍板
+## 四、决议
 
-请老板从 HG-1 / HG-2 中选一个。
+**选定 HG-2**（五角色统一 HARD-GATE 化）。
 
-- 选 **HG-1** —— 鲁班直接给 CLAUDE.md 加上面那段，30 分钟搞定
-- 选 **HG-2** —— 鲁班加 CLAUDE.md 定义段 + 给 wendao/mozi SKILL.md 口头禅包 HARD-GATE，1 小时
+- CLAUDE.md 已新增 HARD-GATE 定义段，明示"五角色统一使用范围（HG-2 定调）"
+- wendao/mozi SKILL.md 口头禅已加 `<HARD-GATE>` 包裹
+- 不使用范围：开放式追问、性格描写、签文激活语
+
+**归档原因**：设计决策已落地执行，CLAUDE.md + 五角色 SKILL.md 均已更新，提案使命完成。

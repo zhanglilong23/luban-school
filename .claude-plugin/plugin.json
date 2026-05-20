@@ -1,7 +1,7 @@
 {
   "name": "luban-school",
-  "version": "1.7.1",
-  "description": "鲁班学派 — 契约驱动的 AI Agent 角色分工协作体系。五角色（问道/司南/鲁班/狄公/墨子）+ 学派法器（敕令·周天仪 inline 三阶段执行 / 敕令·巡天仪 session cron 调度中枢 + spawn 周天/司南 + escalation chain）+ 七签功法总纲。修仙体系：求道→筑基→结丹→化神→渡劫。斜杠命令 /luban-school:wendao(问道) /luban-school:sinan(司南) /luban-school:luban(鲁班) /luban-school:digong(狄公) /luban-school:mozi(墨子) /luban-school:chiling-zhoutian(周天仪) /luban-school:chiling-xuntian(巡天仪) /luban-school:setup(配置引导) 激活角色；@提及保留中文 @问道 @司南 @鲁班 @狄公 @墨子 @敕令-zhoutian @敕令-xuntian。",
+  "version": "1.8.0",
+  "description": "鲁班学派 — 契约驱动的 AI Agent 角色分工协作体系。五角色（问道/司南/鲁班/狄公/墨子）+ 学派法器（敕令·周天仪 inline 三阶段执行 / 敕令·巡天仪 session cron 调度中枢 + spawn 周天/司南/玄鉴 + escalation chain / 敕令·太素玄鉴 诊断域法器 + 五诊法门 + 显影归流）+ 七签功法总纲。修仙体系：求道→筑基→结丹→化神→渡劫。斜杠命令 /luban-school:wendao(问道) /luban-school:sinan(司南) /luban-school:luban(鲁班) /luban-school:digong(狄公) /luban-school:mozi(墨子) /luban-school:chiling-zhoutian(周天仪) /luban-school:chiling-xuntian(巡天仪) /luban-school:chiling-xuanjian(太素玄鉴) /luban-school:setup(配置引导) 激活角色；@提及保留中文 @问道 @司南 @鲁班 @狄公 @墨子 @敕令-zhoutian @敕令-xuntian @玄鉴。",
   "author": {
     "name": "鲁班学派",
     "url": "https://github.com/zhanglilong23/luban-school"

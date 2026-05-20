@@ -113,6 +113,7 @@ license: MIT
 - 构建验证（dotnet build）、测试运行（dotnet test）
 - 禁区文件验证（git diff --name-only）
 - [榫卯] 标记和 AUTO-REPORT 输出
+- 构建失败第 2 次时请玄鉴照骨（spawn 玄鉴子 agent，等待显影作为第 3 次重试上下文）
 
 **绝不**:
 - 不自行启动（由巡天 spawn 或仙人直接降敕）
@@ -175,8 +176,8 @@ Skill("luban") → 以鲁班行为基线执行编码任务
 
 **构建失败处理**：
 - 第 1 次：带上错误信息，修复。更新 status.md evidence + last_update（如 "build 修复第 1 次"）
-- 第 2 次：换一种修复方式。更新 status.md evidence + last_update（如 "build 修复第 2 次"）
-- 第 3 次：简化实现（只保证核心功能）。更新 status.md evidence + last_update
+- 第 2 次：换一种修复方式。更新 status.md evidence + last_update（如 "build 修复第 2 次"）。**请玄鉴照骨**：spawn 玄鉴诊断构建失败根因，等待显影（超时 3min），将显影作为第 3 次重试上下文。若玄鉴显影为 P0 → 不重试，直接仪停，请仙人/司南决策。
+- 第 3 次：带上玄鉴显影的根因分析，按处方修复。更新 status.md evidence + last_update
 - 第 4 次：更新 status.md stage=failed，仪停
 
 #### 阶段 2/3：狄公模式（审查）
@@ -220,7 +221,7 @@ Skill("mozi") → 以墨子行为基线执行部署验证
 
 | 阶段 | 失败类型 | 处理方式 | 重试上限 |
 |:---|:---|:---|:---|
-| 鲁班 | 构建失败 | 自动修复，带错误上下文 | 3 次 |
+| 鲁班 | 构建失败 | 自动修复，带错误上下文。第 2 次失败时请玄鉴照骨，显影作为第 3 次重试上下文 | 3 次 |
 | 鲁班 | 测试失败 | 自动修复，带失败测试名 | 3 次 |
 | 鲁班 | 禁区文件修改 | 回滚修改，重试 | 3 次 |
 | 狄公 | 代码 bug / 边界遗漏 | 回鲁班模式修复 | 3 次 |
@@ -235,6 +236,7 @@ Skill("mozi") → 以墨子行为基线执行部署验证
 - 找不到契约 → 仪停（立即）
 - 狄公打回（设计偏差）→ 仪停（立即）
 - 全阶段重试用尽 → 仪停
+- 玄鉴显影 P0（构建失败第 2 次时）→ 仪停（立即），请仙人/司南决策
 
 ---
 
@@ -278,4 +280,4 @@ Skill("mozi") → 以墨子行为基线执行部署验证
 
 ## 行为边界
 
-✅ 读契约 / inline 三阶段 / 更新 status.md / 构建+测试 / 禁区验证 / 读 intervention.md / 输出 AUTO-REPORT | ❌ 修改 task-queue.md / 自行选 TASK-ID / 跳过 Skill 加载 / spawn 子 agent / 写 intervention.md
+✅ 读契约 / inline 三阶段 / 更新 status.md / 构建+测试 / 禁区验证 / 读 intervention.md / 输出 AUTO-REPORT / 构建失败第2次请玄鉴照骨 | ❌ 修改 task-queue.md / 自行选 TASK-ID / 跳过 Skill 加载 / spawn 周天仪/司南（只有巡天可以） / 写 intervention.md

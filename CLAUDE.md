@@ -17,6 +17,7 @@
 | `@墨子` | `mozi` | 部署运维 | 构建/测试/部署流水线、Agent 资源管理 | 渡劫期 |
 | `@敕令-zhoutian` | `chiling-zhoutian` | 敕令·周天仪 | 执行契约 + 自检 + 监控子agent | 法器位 |
 | `@敕令-xuntian` | `chiling-xuntian` | 敕令·巡天仪 | 监控代码走向 + 解决架构问题 + 通知司南拆解TSK | 法器位 |
+| `@玄鉴` | `chiling-xuanjian` | 敕令·太素玄鉴 | bug 根因诊断 + 架构体检 + LLM五衰扫描 | 法器位 |
 
 ## 七签功法体系
 
@@ -67,4 +68,4 @@
 
 **不使用**: 开放式追问、性格描写、签文激活语——保留 LLM 表达灵活性。
 
-详见 `docs/design/proposals/TASK-010-hard-gate-scope.md`。
+详见 `docs/design/archive/TASK-010-hard-gate-scope.md`。

@@ -1,89 +1,119 @@
-# Luban School (鲁班学派)
+# 鲁班学派
 
 <p align="center">
-  <b>Contract-Driven AI Agent Role Collaboration</b>
+  <b>契约驱动的 AI Agent 角色分工协作体系</b>
 </p>
 
-A multi-agent skill system using role-based collaboration: Requirement Seeker (问道) refines
-requirements from chaos, Tech Lead (司南) writes contracts, Engineer (鲁班) delivers code,
-QA (狄公) runs independent reviews, DevOps (墨子) handles deployment. Each role is self-contained
-with the full Seven Scrolls (七签) technique library built in.
+五角色、七签功法、一份契约。修仙体系：求道→筑基→结丹→化神→渡劫。云笈是天书（功法总纲），不是角色。问道从混沌中炼需求真言、司南拆需求定契约、鲁班编码闭环交付、狄公独立质量审查、墨子部署运维。每个角色自包含完整七签定义，独立安装即可使用。
 
-**Cultivation Path** (修仙体系):
-```
-Seeking (问道·问道签) → Foundation (司南·周天签) → Core (鲁班·存真签) → Spirit (狄公·绳墨签) → Tribulation (墨子·定盘签)
-                                                                          ↑
-                                                        入木签 (Public Debug) + 契约签 (Constitution) throughout
-```
+**三重能力：**
 
-**Three capabilities:**
-
-1. **Role Collaboration** — Five roles and one instrument with clear boundaries, contract-driven handoffs
-2. **Seven Scrolls (七签功法)** — Seven orthogonal problem-solving methodologies, built into every role
-3. **Quality Gate** — Independent verification, three checklists, one-vote veto
-
-[🇨🇳 中文](README.zh-CN.md)
+1. **角色分工协作** — 五角色 + 学派法器边界清晰，契约驱动交付
+2. **七签功法体系** — 七个正交方法论，按场景切换，内置每个角色
+3. **质量门禁** — 独立验证、三张清单、一票否决
 
 ---
 
-## The Problem: AI Agent Collaboration
+## 问题：AI Agent 协作的五大痛点
 
-| Pattern | Behavior |
-|---------|----------|
-| No boundaries | Agent does everything, verifies nothing |
-| No handoff | No clear "who does what" protocol |
-| No quality gate | Code is merged without independent review |
-| No methodology | Same failed approach repeated |
-| Passive waiting | Fix surface issue and stop, ignore root cause |
+| 痛点 | 表现 |
+|------|------|
+| 边界模糊 | Agent 什么都做，什么都不验证 |
+| 缺乏交接 | 没有"谁做什么"的明确协议 |
+| 缺乏审查 | 代码不经独立 review 直接合入 |
+| 方法僵化 | 同一失败方案反复尝试 |
+| 被动等待 | 修完表面问题就停下 |
 
-## Architecture
+## 架构
 
 ```
-@问道 (Seeker)      →  Refines chaos into 需求真言 (Requirement Truth)
+@问道 (需求求道者)  →  从混沌中炼出需求真言
     ↓
-@司南 (Tech Lead)   →  Outputs Contract (TASK-ID + DONE + DON'T)
+@司南 (Tech Lead)   →  输出《任务拆解契约》(TASK-ID + DONE + DON'T)
     ↓
-@鲁班 (Engineer)    →  Executes, delivers [榫卯]
+@鲁班 (Engineer)    →  按契约编码，交付 [榫卯]
     ↓
-@狄公 (QA)          →  Independent review, three checklists
-    ↓ Pass / Fail (≤3 times) → back to @鲁班
-    ↓ Pass
-@墨子 (DevOps)      →  Build → Test → Deploy
+@狄公 (QA)          →  独立验证，三张审查清单
+    ↓ 打回(≤3次) → 回到 @鲁班
+    ↓ 3次打回 → @司南 仲裁
+    ↓ 通过
+@墨子 (DevOps)      →  构建 → 测试 → 部署
+
+          ┌─── @玄鉴（诊断域法器）───┐
+          │   bug 排查 / 架构体检     │
+          ↓                          ↓
+      巡天仪请鉴 ──→ 玄鉴显影 ──→ 归流巡天仪/司南
 ```
 
-### Seven Scrolls (七签)
+### 修仙位格与七签
 
-Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签名` to practice.
+```
+求道（问道·问道签）→ 筑基（司南·周天签）→ 结丹（鲁班·存真签）→ 化神（狄公·绳墨签）→ 渡劫（墨子·定盘签）
+                                                                      ↑
+                                                          入木签（公共 Debug）+ 契约签（宪法）贯穿始终
+```
 
-| # | Scroll | Mantra | Nature | Practiced By |
-|---|--------|--------|--------|-------------|
-| 1 | 问道签 | 炼真言 | 心法 | 问道 |
-| 2 | 周天签 | 运周天 | 功法 | 司南 |
-| 3 | 入木签 | 深入木 | 诀法 | Public Debug Scroll |
-| 4 | 存真签 | 留存真 | 式法 | 鲁班 |
-| 5 | 绳墨签 | 弹绳墨 | 令法 | 狄公 |
-| 6 | 定盘签 | 准定盘 | 术法 | 墨子 |
-| 7 | 契约签 | 定契约 | 大法 | All (Constitution) |
+从混沌到生产，恰好是一个修士从求道到渡劫的完整路径。七签是修行之术，契约是万法归一的根本准则。每个角色 SKILL.md 已内嵌完整七签定义，独立安装即可使用全部功法。
 
-**Practice syntax**: `@角色 +签名` / `@角色 -签名` / `@角色 +签1 +签2`
+## 七签功法
+
+> **炼真言 / 运周天 / 深入木 / 留存真 / 弹绳墨 / 准定盘 / 定契约**
+
+七签是鲁班学派的核心功法体系。命名取自道教经典《云笈七签》。每签是一套完整的正交方法论，通过 `@角色 +签名` 修习。
+
+| 签序 | 签名 | 法门 | 口诀 | 性质 | 主修 | 适用场景 |
+|------|------|------|------|------|------|---------|
+| 第一签 | 问道签 | 问道心法 | 炼真言 | 心法 | 问道 | 需求求道 |
+| 第二签 | 周天签 | 周天功 | 运周天 | 功法 | 司南 | 规划、部署、交付 |
+| 第三签 | 入木签 | 入木诀 | 深入木 | 诀法 | 公共 Debug 签 | Debug、排错、审查 |
+| 第四签 | 存真签 | 存真式 | 留存真 | 式法 | 鲁班 | 编码、重构、优化 |
+| 第五签 | 绳墨签 | 绳墨令 | 弹绳墨 | 令法 | 狄公 | 代码审查、质量门禁 |
+| 第六签 | 定盘签 | 定盘术 | 准定盘 | 术法 | 墨子 | 性能优化、部署验证 |
+| 第七签 | 契约签 | 契约法 | 定契约 | 大法 | 全员（宪法） | 无契约，不行动 |
+
+**修习语法**: `@角色 +签名` / `@角色 -签名` / `@角色 +签1 +签2`
+
+入木签为公共 Debug 签，任意角色皆可修习。契约签为全员宪法，永远在线。
+
+### 后缀释义
+
+心法、功法、诀法、式法、令法、术法、大法——各取其性，不混用。
+
+| 后缀 | 本义 | 对应签 | 为何是它 |
+|------|------|--------|---------|
+| **心法** | 内心修炼 | 问道签 | 求道在心，不在术 |
+| **功法** | 功法，持续修炼 | 周天签 | 循环不息，日日运功 |
+| **诀法** | 口诀，关键时刻激活 | 入木签 | 念诀即入深层，遇疑难方激活 |
+| **式法** | 招式，有起手有收招 | 存真签 | 从质疑起手，到构建收招 |
+| **令法** | 法令，不可违逆 | 绳墨签 | 越线即斩，无例外 |
+| **术法** | 术法，精准度量 | 定盘签 | 校准基准，称量斤两 |
+| **大法** | 根本大法 | 契约签 | 万法归一，契约为纲 |
+
+### 七签口诀
+
+```
+炼真言 / 运周天 / 深入木 / 留存真 / 弹绳墨 / 准定盘 / 定契约
+  一       二       三       四       五       六       七
+ 心法     功法     诀法     式法     令法     术法     大法
+```
 
 ---
 
-## ⚙️ 敕令法器家族 (Chiling — The Instruments)
+## ⚙️ 敕令法器家族
 
 > **仙人降敕，司南定契，周天仪转，巡天仪察，万械循章。**
 
 ### 由来
 
-鲁班学派无尊卑，七签匠人皆平级。若需自动化串联诸匠，不可设「管理者」凌驾其上。故唯有一途：**仙人降敕授权，学派共铸双器**——敕令·周天仪与敕令·巡天仪。
+鲁班学派无尊卑，七签匠人皆平级。若需自动化串联诸匠，不可设「管理者」凌驾其上。故唯有一途：**仙人降敕授权，学派共铸三器**——敕令·周天仪、敕令·巡天仪与敕令·太素玄鉴。
 
-此二仪**非人非官，唯器唯公**。周天仪不决策、不代劳、不评价，只将司南所定契约化为精确的流转序列；巡天仪只监控、不干预，确保执行不偏离设计。
+此三仪**非人非官，唯器唯公**。周天仪不决策、不代劳、不评价，只将司南所定契约化为精确的流转序列；巡天仪只监控、不干预，确保执行不偏离设计；玄鉴只照病、不断案，照见架构真形，堪破代码五衰。
 
 > 法器无意志，故无私；无位格，故不凌人。
 
 ### 位格
 
-法器不入修仙五阶，独立为**法器位**。
+法器不入修仙五阶，独立为**法器位**。三器各司其域：周天仪（执行域）、巡天仪（设计域）、太素玄鉴（诊断域）。
 
 ```
 仙人（用户）
@@ -100,7 +130,14 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
   │
   ├── 监控代码走向（对比契约）
   ├── 解决架构问题（仲裁偏离）
-  └── 通知司南拆解TSK
+  ├── 通知司南拆解TSK
+  └── 异动检测 → 请玄鉴照骨/观势
+
+【法器】敕令·太素玄鉴 ──被召唤──→ 诊断
+  │
+  ├── 照骨相（Bug 根因诊断）
+  ├── 观势相（架构体检 + 六维评分）
+  └── 显影归流 → 巡天仪/司南
 ```
 
 ### 法器家族
@@ -109,6 +146,7 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 |------|------|------|---|
 | **周天仪** | `/luban-school:chiling-zhoutian` | 执行契约 + 自检 + 监控子agent | 执行域 |
 | **巡天仪** | `/luban-school:chiling-xuntian` | 监控代码走向 + 解决架构问题 + 通知司南拆解TSK | 设计域 |
+| **太素玄鉴** | `/luban-school:chiling-xuanjian` | bug 根因诊断 + 架构体检 + LLM 五衰扫描 | 诊断域 |
 
 ### 周天仪功能
 
@@ -120,10 +158,27 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 
 若某步受阻，自动重试（每匠至多三次）。三次未通，仪停待示，不自行决断。全程留痕，输出 `[AUTO-REPORT]` 结构化实录。
 
+**玄鉴协同**：构建失败第 2 次时，自动请玄鉴照骨诊断根因，显影作为第 3 次重试上下文。若玄鉴显影 P0 → 直接仪停。
+
 **自检机制**：
 - 每1分钟更新心跳
 - 超时检测（>10分钟判定卡死）
 - 卡死处理（重试+上下文切换，4次后终止）
+
+### 太素玄鉴功能
+
+太素玄鉴是诊断域法器，专门做 bug 根因排查和架构体检，不改代码、不定契约：
+
+1. **照骨相**（Bug 诊断）：摄迹 → 寻脉 → 探源，定位根因
+2. **观势相**（架构体检）：观势 → 审阵 → 寻脉，六维评分
+3. **太素全相**：全维诊断，定期架构巡检
+
+**触发方式**：
+- 仙人直接召唤：`@玄鉴 [问题描述]`
+- 巡天仪异动检测自动请鉴
+- 周天仪构建失败时请鉴
+
+**显影输出**：结构化诊断报告，按 P0/P1/P2 凶险定级，归流至巡天仪决策。
 
 ### 巡天仪功能
 
@@ -147,9 +202,13 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 # 巡天仪：监控执行
 /luban-school:chiling-xuntian
 
+# 太素玄鉴：诊断
+/luban-school:chiling-xuanjian 这个报错怎么回事
+
 # 或 @提及
 @敕令-zhoutian TASK-xxx
 @敕令-xuntian TASK-xxx
+@玄鉴 架构太乱了
 ```
 
 ### 共享状态文件
@@ -162,115 +221,51 @@ Each role SKILL.md contains the full seven scrolls definition. Use `@角色 +签
 - 周天仪→巡天仪：heartbeat, stage_complete, stuck, deviation, complete
 - 巡天仪→周天仪：continue, skip, abort, adjust
 - 巡天仪→司南：need_new_tsk
+- 玄鉴→巡天仪：xuanjian-report.md（显影归流，按 P0/P1/P2 决策）
 
 ---
 
-## Installation
+## 核心标识
 
-### Choose Your Tier
+| 标识 | 含义 |
+|------|------|
+| `[准绳]` | 诊断先行——弹了墨线再动手 |
+| `[匠心 🔨]` | 超出要求的工匠精神 |
+| `[榫卯]` | 任务交付——完美契合，无需返工 |
+| `三准绳` | 闭环 / 事实驱动 / 穷尽 |
+| `C0-C4` | 匠心入微——五个精进层次 |
 
-| Tier | What | For |
-|------|------|-----|
-| **Minimal** | 1 role (e.g., just 鲁班) | Solo dev, just need a coding assistant |
-| **Standard** | 5 roles + 1 instrument (问道+司南+鲁班+狄公+墨子 + 敕令·周天仪) | Team workflow, full pipeline |
+## 安装
 
-Each role is self-contained — installing a single role gives you full functionality including all seven scrolls.
+### 分层选择
+
+| 层级 | 安装内容 | 适用场景 |
+|------|---------|---------|
+| **最小** | 1 个角色（如只装鲁班） | 个人开发者，只需编码助手 |
+| **标准** | 5 角色 + 1 法器（问道+司南+鲁班+狄公+墨子 + 敕令·周天仪） | 团队协作，完整流水线 |
+| **完整** | 5 角色 + 3 法器（+巡天仪 +太素玄鉴） | 需要自动化调度 + 诊断能力 |
+
+每个角色自包含完整七签定义，独立安装即可使用全部功法。
 
 ### Claude Code
 
-**Plugin install (recommended, works immediately):**
+**插件安装（推荐，装完即用）：**
 
 ```bash
 claude plugin marketplace add luban-school/luban-school
 claude plugin install luban-school@luban-school
 ```
 
-Use slash commands: `/luban-school:wendao` `/luban-school:sinan` `/luban-school:luban` `/luban-school:digong` `/luban-school:mozi` `/luban-school:chiling-zhoutian` `/luban-school:chiling-xuntian`. No CLAUDE.md configuration needed.
+安装后直接使用斜杠命令：`/luban-school:wendao` `/luban-school:sinan` `/luban-school:luban` `/luban-school:digong` `/luban-school:mozi` `/luban-school:chiling-zhoutian` `/luban-school:chiling-xuntian` `/luban-school:chiling-xuanjian`。中英映射详见下方"使用方法"。无需手动配置 CLAUDE.md。
 
-**Manual project-level install:**
+**手动项目级安装：**
 
 ```bash
 mkdir -p .claude/skills
 cp -r path/to/luban-school/skills/* .claude/skills/
 ```
 
-### Vercel Skills CLI
-
-```bash
-# Standard (5 roles)
-npx skills add luban-school/luban-school --skill wendao
-npx skills add luban-school/luban-school --skill sinan
-npx skills add luban-school/luban-school --skill luban
-npx skills add luban-school/luban-school --skill digong
-npx skills add luban-school/luban-school --skill mozi
-```
-
-### Standard SKILL.md Platforms
-
-Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity all support standard SKILL.md. Copy `skills/` to the platform directory:
-
-| Platform | Install Path | Trigger |
-|----------|-------------|---------|
-| Codex CLI | `~/.codex/skills/` | Auto-matched by description |
-| CodeBuddy | `~/.codebuddy/skills/` | Plugin mechanism |
-| OpenCode | `~/.config/opencode/skills/` | Standard SKILL.md |
-| OpenClaw | `~/.openclaw/skills/` | ClawHub |
-| Antigravity | `~/.gemini/antigravity/skills/` | Standard SKILL.md |
-
-### Non-Standard Platforms
-
-| Platform | Config File | How |
-|----------|------------|-----|
-| Cursor | `cursor/rules/luban-school.mdc` | Copy to `.cursor/rules/`, AI semantic matching |
-| Kiro | `kiro/steering/luban-school.md` | Copy to `.kiro/steering/`, always active |
-| VSCode Copilot | `vscode/copilot-instructions.md` | Copy to `.github/copilot-instructions.md` |
-
----
-
-## Usage
-
-In Claude Code (with plugin installed), use slash commands or @mentions:
-
-### Command ↔ Role Mapping
-
-| Role | Slash Command | @Mention |
-|------|--------------|----------|
-| 问道 (Seeker) | `/luban-school:wendao` | `@问道` |
-| 司南 (Tech Lead) | `/luban-school:sinan` | `@司南` |
-| 鲁班 (Engineer) | `/luban-school:luban` | `@鲁班` |
-| 狄公 (QA) | `/luban-school:digong` | `@狄公` |
-| 墨子 (DevOps) | `/luban-school:mozi` | `@墨子` |
-| 敕令·周天仪 (Instrument) | `/luban-school:chiling-zhoutian` | `@敕令-zhoutian` |
-| 敕令·巡天仪 (Monitor) | `/luban-school:chiling-xuntian` | `@敕令-xuntian` |
-
-Slash commands use ASCII filenames for cross-platform reliability; @mentions keep Chinese role names for natural-language flow.
-
-```
-# Slash commands (works immediately after plugin install)
-/luban-school:wendao 我觉得功能不够智能
-/luban-school:sinan 我需要一个用户登录功能
-/luban-school:luban 开始执行
-/luban-school:digong 审查
-/luban-school:mozi deploy
-/luban-school:chiling-zhoutian TASK-xxx
-
-# @mentions (requires CLAUDE.md trigger rules for manual install)
-@问道 我觉得功能不够智能
-@司南 我需要一个用户登录功能
-@鲁班 开始执行
-@狄公 审查
-@墨子 deploy
-@敕令-zhoutian TASK-xxx  # 周天仪执行契约
-@敕令-xuntian           # 巡天仪监控执行
-@鲁班 +入木          # Practice 入木签 on 鲁班
-@狄公 +存真          # Practice 存真签 on 狄公
-```
-
-For manual install, ensure project CLAUDE.md has the trigger rules (see template below).
-
-### Project CLAUDE.md Template — Copy & Paste
-
-Copy the block below into your project's `CLAUDE.md` to enable @mention triggers:
+手动安装后，在项目 CLAUDE.md 中添加触发规则（可选，用于 @mention 触发）。**一键复制**：
 
 ```markdown
 ## 角色技能强制触发
@@ -286,38 +281,115 @@ Copy the block below into your project's `CLAUDE.md` to enable @mention triggers
 | `@墨子` | `mozi` | 部署运维 | 构建/测试/部署流水线 |
 | `@敕令-zhoutian` | `chiling-zhoutian` | 敕令·周天仪 | 执行契约 + 自检 + 监控子agent |
 | `@敕令-xuntian` | `chiling-xuntian` | 敕令·巡天仪 | 监控代码走向 + 架构仲裁 + TSK拆解 |
+| `@玄鉴` | `chiling-xuanjian` | 敕令·太素玄鉴 | bug 根因诊断 + 架构体检 + LLM五衰扫描 |
 
 ## 协作流程
 
 @问道 炼真言 → @司南 出契约 → @鲁班 执行编码 → @狄公 审查 → @墨子 部署
 ```
 
-**After pasting**: type `@问道 <your idea>` in Claude Code to start the collaboration flow.
+**复制后**：在 Claude Code 中输入 `@问道 <你的想法>` 即可启动协作流程。
+
+### Vercel Skills CLI
+
+```bash
+# 标准安装（5 角色）
+npx skills add luban-school/luban-school --skill wendao
+npx skills add luban-school/luban-school --skill sinan
+npx skills add luban-school/luban-school --skill luban
+npx skills add luban-school/luban-school --skill digong
+npx skills add luban-school/luban-school --skill mozi
+```
+
+### 标准 SKILL.md 平台
+
+Codex CLI / CodeBuddy / OpenCode / OpenClaw / Google Antigravity 均支持标准 SKILL.md 格式。将 `skills/` 目录复制到对应平台即可：
+
+| 平台 | 安装目录 | 触发方式 |
+|------|---------|---------|
+| Codex CLI | `~/.codex/skills/` | description 自动匹配 + `$角色名` |
+| CodeBuddy | `~/.codebuddy/skills/` | plugin 机制 |
+| OpenCode | `~/.config/opencode/skills/` | 标准 SKILL.md |
+| OpenClaw | `~/.openclaw/skills/` | ClawHub |
+| Antigravity | `~/.gemini/antigravity/skills/` | 标准 SKILL.md |
+
+### 非标平台
+
+| 平台 | 配置文件 | 安装方式 |
+|------|---------|---------|
+| Cursor | `cursor/rules/luban-school.mdc` | 复制到 `.cursor/rules/`，AI 语义自动匹配 |
+| Kiro | `kiro/steering/luban-school.md` | 复制到 `.kiro/steering/`，始终生效 |
+| VSCode Copilot | `vscode/copilot-instructions.md` | 复制到 `.github/copilot-instructions.md` |
 
 ---
 
-## Skill Files
+## 使用方法
 
-| Skill | Role | Default Scroll | Cultivation |
-|-------|------|----------------|-------------|
-| `wendao` | 问道 — Requirement Seeker | 问道签 | 求道期 |
+在 Claude Code 中（安装插件后），斜杠命令或 @mention 均可触发：
+
+### 命令 ↔ 角色映射
+
+| 角色 | 斜杠命令 | @提及 |
+|------|---------|-------|
+| 问道 | `/luban-school:wendao` | `@问道` |
+| 司南 | `/luban-school:sinan` | `@司南` |
+| 鲁班 | `/luban-school:luban` | `@鲁班` |
+| 狄公 | `/luban-school:digong` | `@狄公` |
+| 墨子 | `/luban-school:mozi` | `@墨子` |
+| 敕令·周天仪 | `/luban-school:chiling-zhoutian` | `@敕令-zhoutian` |
+| 敕令·巡天仪 | `/luban-school:chiling-xuntian` | `@敕令-xuntian` |
+| 敕令·太素玄鉴 | `/luban-school:chiling-xuanjian` | `@玄鉴` |
+
+斜杠命令采用 ASCII 文件名确保跨平台稳定；@提及保留中文角色名以符合自然语言习惯。
+
+```
+# 斜杠命令（插件安装后立即可用，推荐）
+/luban-school:wendao 我觉得功能不够智能
+/luban-school:sinan 我需要一个用户登录功能
+/luban-school:luban 开始执行
+/luban-school:digong 审查
+/luban-school:mozi deploy
+/luban-school:chiling-zhoutian TASK-xxx
+/luban-school:chiling-xuanjian 这个报错怎么回事
+
+# @mention（手动安装需配置 CLAUDE.md 触发规则）
+@问道 我觉得功能不够智能
+@司南 我需要一个用户登录功能
+@鲁班 开始执行
+@狄公 审查
+@墨子 deploy
+@敕令-zhoutian TASK-xxx  # 周天仪执行契约
+@敕令-xuntian           # 巡天仪监控执行
+@玄鉴 架构太乱了        # 太素玄鉴诊断
+@鲁班 +入木          # 鲁班修习入木签
+@狄公 +存真          # 狄公修习存真签
+```
+
+手动安装时，确保项目 CLAUDE.md 包含触发规则（见上方模板）。
+
+---
+
+## 技能文件
+
+| Skill | 角色 | 默认签 | 修仙位格 |
+|-------|------|--------|---------|
+| `wendao` | 问道 — 需求求道者 | 问道签 | 求道期 |
 | `sinan` | 司南 — Tech Lead | 周天签 | 筑基期 |
-| `luban` | 鲁班 — Engineer | 存真签 | 结丹期 |
-| `digong` | 狄公 — QA Gatekeeper | 绳墨签 | 化神期 |
-| `mozi` | 墨子 — DevOps | 定盘签 | 渡劫期 |
-| `chiling-zhoutian` | 敕令·周天仪 — Instrument | 周天签 | 法器位 |
-| `chiling-xuntian` | 敕令·巡天仪 — Monitor | 周天签 | 法器位 |
+| `luban` | 鲁班 — 执行工程师 | 存真签 | 结丹期 |
+| `digong` | 狄公 — 质量守门人 | 绳墨签 | 化神期 |
+| `mozi` | 墨子 — 部署运维 | 定盘签 | 渡劫期 |
+| `chiling-zhoutian` | 敕令·周天仪 — 学派法器 | 周天签 | 法器位 |
+| `chiling-xuntian` | 敕令·巡天仪 — 学派法器 | 周天签 | 法器位 |
+| `chiling-xuanjian` | 敕令·太素玄鉴 — 诊断域法器 | 入木签 | 法器位 |
 
-Each skill file is self-contained with behavior baselines, full seven scrolls definitions, and role-specific procedures.
-
----
+每个技能文件自包含：行为基线 + 七签速查 + 全部签文 + 修习语法 + 专属规程。
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT。详见 [LICENSE](LICENSE)。
 
 ---
 
 ## Credits
 
-鲁班学派 (Luban School) — Contract-driven craftsmanship.
+鲁班学派 — 契约驱动的工匠精神。
